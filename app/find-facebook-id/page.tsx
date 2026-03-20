@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { useRequestCount } from '@/lib/hooks/useRequestCount'
 import { ToolHeader } from '@/components/tools/tool-header'
 import { InfoTabs } from '@/components/tools/info-tabs'
 import { SearchIcon, RefreshIcon, CopyIcon, GeistSpinner } from '@/components/icons'
@@ -23,6 +24,7 @@ export default function FindFacebookIDPage() {
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<string | null>(null)
+  const { count: reqCount, increment } = useRequestCount('find-facebook-id')
 
   async function handleFind() {
     const trimmed = url.trim()
@@ -46,6 +48,7 @@ export default function FindFacebookIDPage() {
 
       setResult(id)
       toast.success('ID found!')
+      void increment()
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : 'Failed to find ID')
     } finally {
@@ -62,9 +65,10 @@ export default function FindFacebookIDPage() {
     <main className="max-w-[720px] mx-auto px-4 pb-16 pt-5 sm:px-5 sm:pt-6 md:px-7 md:pt-7 lg:max-w-[840px] lg:px-10 lg:pt-8 xl:max-w-[960px] xl:px-14">
       <ToolHeader
         icon={<SearchIcon />}
-        iconClass="k"
+        iconClass="b"
         name="Find Facebook ID"
         subtitle="Find numeric Facebook IDs from any profile or group URL"
+        count={reqCount}
       />
 
       {/* Input card */}

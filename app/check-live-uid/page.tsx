@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { toast } from 'sonner'
+import { useRequestCount } from '@/lib/hooks/useRequestCount'
 import { ToolHeader } from '@/components/tools/tool-header'
 import { InfoTabs } from '@/components/tools/info-tabs'
 import { CheckUidIcon, PlayIcon, RefreshIcon, CopyIcon, DownloadIcon, CheckCircleIcon, XCircleIcon, TriangleAlertIcon, UserCheckIcon, ListIcon, GripIcon, GeistSpinner } from '@/components/icons'
@@ -118,6 +119,7 @@ export default function CheckLiveUIDPage() {
   const [liveArr, setLiveArr] = useState<UIDResult[]>([])
   const [deadArr, setDeadArr] = useState<UIDResult[]>([])
   const [errArr, setErrArr] = useState<UIDResult[]>([])
+  const { count: reqCount, increment } = useRequestCount('check-uid')
 
   const uids = input.split('\n').map(s => s.trim()).filter(Boolean)
   const count = uids.length
@@ -171,6 +173,7 @@ export default function CheckLiveUIDPage() {
 
       setLiveArr(live); setDeadArr(dead); setErrArr(err)
       toast.success(`Done! ${live.length} live · ${dead.length} dead · ${err.length} error`)
+      void increment()
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : 'Failed to check UIDs')
     } finally {
@@ -190,6 +193,7 @@ export default function CheckLiveUIDPage() {
         iconClass="g"
         name="Check Live UID Facebook"
         subtitle="Verify Facebook UID status — up to 50 per batch"
+        count={reqCount}
       />
 
       {/* Input card */}

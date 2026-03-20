@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { useRequestCount } from '@/lib/hooks/useRequestCount'
 import { ToolHeader } from '@/components/tools/tool-header'
 import { InfoTabs } from '@/components/tools/info-tabs'
 import { MessageSquareIcon, SearchIcon, RefreshIcon, CopyIcon, GeistSpinner } from '@/components/icons'
@@ -22,6 +23,7 @@ export default function FindPostIDPage() {
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<string | null>(null)
+  const { count: reqCount, increment } = useRequestCount('find-post-id')
 
   async function handleFind() {
     const trimmed = url.trim()
@@ -45,6 +47,7 @@ export default function FindPostIDPage() {
 
       setResult(id)
       toast.success('Post ID found!')
+      void increment()
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : 'Failed to extract Post ID')
     } finally {
@@ -61,9 +64,10 @@ export default function FindPostIDPage() {
     <main className="max-w-[720px] mx-auto px-4 pb-16 pt-5 sm:px-5 sm:pt-6 md:px-7 md:pt-7 lg:max-w-[840px] lg:px-10 lg:pt-8 xl:max-w-[960px] xl:px-14">
       <ToolHeader
         icon={<MessageSquareIcon />}
-        iconClass="k"
+        iconClass="v"
         name="Find Facebook Post ID"
         subtitle="Extract numeric Post IDs from any Facebook post URL"
+        count={reqCount}
       />
 
       {/* Input card */}
