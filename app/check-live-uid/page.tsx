@@ -119,7 +119,7 @@ export default function CheckLiveUIDPage() {
   const [liveArr, setLiveArr] = useState<UIDResult[]>([])
   const [deadArr, setDeadArr] = useState<UIDResult[]>([])
   const [errArr, setErrArr] = useState<UIDResult[]>([])
-  const { count: reqCount, increment } = useRequestCount('check-uid')
+  const { count: reqCount, loading: reqLoading, increment } = useRequestCount('check-uid')
 
   const uids = input.split('\n').map(s => s.trim()).filter(Boolean)
   const count = uids.length
@@ -194,6 +194,7 @@ export default function CheckLiveUIDPage() {
         name="Check Live UID Facebook"
         subtitle="Verify Facebook UID status — up to 50 per batch"
         count={reqCount}
+        countLoading={reqLoading}
       />
 
       {/* Input card */}

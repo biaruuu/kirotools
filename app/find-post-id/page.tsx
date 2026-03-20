@@ -23,7 +23,7 @@ export default function FindPostIDPage() {
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<string | null>(null)
-  const { count: reqCount, increment } = useRequestCount('find-post-id')
+  const { count: reqCount, loading: reqLoading, increment } = useRequestCount('find-post-id')
 
   async function handleFind() {
     const trimmed = url.trim()
@@ -68,6 +68,7 @@ export default function FindPostIDPage() {
         name="Find Facebook Post ID"
         subtitle="Extract numeric Post IDs from any Facebook post URL"
         count={reqCount}
+        countLoading={reqLoading}
       />
 
       {/* Input card */}

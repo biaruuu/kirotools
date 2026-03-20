@@ -4,12 +4,14 @@ import { useState, useEffect, useCallback } from 'react'
 
 export function useRequestCount(tool: string) {
   const [count, setCount] = useState<number | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetch(`/api/stats?tool=${encodeURIComponent(tool)}`)
       .then(r => r.json())
       .then(d => { if (typeof d.count === 'number') setCount(d.count) })
       .catch(() => {})
+      .finally(() => setLoading(false))
   }, [tool])
 
   const increment = useCallback(async () => {
@@ -26,5 +28,5 @@ export function useRequestCount(tool: string) {
     }
   }, [tool])
 
-  return { count, increment }
+  return { count, loading, increment }
 }

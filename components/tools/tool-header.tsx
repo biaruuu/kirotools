@@ -16,9 +16,10 @@ interface ToolHeaderProps {
   name: string
   subtitle: string
   count?: number | null
+  countLoading?: boolean
 }
 
-export function ToolHeader({ icon, iconClass = 'k', name, subtitle, count }: ToolHeaderProps) {
+export function ToolHeader({ icon, iconClass = 'k', name, subtitle, count, countLoading }: ToolHeaderProps) {
   return (
     <div className="flex items-start gap-3 mb-[22px]">
       <div className={cn(
@@ -27,19 +28,23 @@ export function ToolHeader({ icon, iconClass = 'k', name, subtitle, count }: Too
       )}>
         <span className="[&>svg]:w-[22px] [&>svg]:h-[22px] xl:[&>svg]:w-[25px] xl:[&>svg]:h-[25px]">{icon}</span>
       </div>
-      <div>
+      <div className="flex-1 min-w-0">
         <div className="text-[19px] font-extrabold text-zinc-900 tracking-[-0.3px] leading-[1.25] md:text-[20px] xl:text-[22px]">
           {name}
         </div>
         <div className="text-[12.5px] text-zinc-500 mt-[3px] font-medium xl:text-[13px]">{subtitle}</div>
-        {count != null && (
-          <div className="flex items-center gap-1.5 mt-1.5">
-            <span className="w-[6px] h-[6px] rounded-full bg-green-500 animate-pulse flex-shrink-0" />
-            <span className="text-[11.5px] text-zinc-400 font-medium">
-              {count.toLocaleString()} total requests
-            </span>
-          </div>
-        )}
+        <div className="flex items-center gap-1.5 mt-[7px] h-4">
+          {countLoading ? (
+            <div className="h-[10px] w-[110px] bg-zinc-100 rounded-full animate-pulse" />
+          ) : count != null ? (
+            <>
+              <span className="w-[6px] h-[6px] rounded-full bg-green-500 animate-pulse flex-shrink-0" />
+              <span className="text-[11.5px] text-zinc-400 font-medium">
+                {count.toLocaleString()} total requests
+              </span>
+            </>
+          ) : null}
+        </div>
       </div>
     </div>
   )

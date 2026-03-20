@@ -24,7 +24,7 @@ export default function FindFacebookIDPage() {
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<string | null>(null)
-  const { count: reqCount, increment } = useRequestCount('find-facebook-id')
+  const { count: reqCount, loading: reqLoading, increment } = useRequestCount('find-facebook-id')
 
   async function handleFind() {
     const trimmed = url.trim()
@@ -69,6 +69,7 @@ export default function FindFacebookIDPage() {
         name="Find Facebook ID"
         subtitle="Find numeric Facebook IDs from any profile or group URL"
         count={reqCount}
+        countLoading={reqLoading}
       />
 
       {/* Input card */}
